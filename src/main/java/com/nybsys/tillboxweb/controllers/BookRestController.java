@@ -1,12 +1,14 @@
 package com.nybsys.tillboxweb.controllers;
 
 
+import com.nybsys.tillboxweb.config.YAMLConfig;
 import com.nybsys.tillboxweb.constant.AccountModuleConstant;
 import com.nybsys.tillboxweb.domain.Book;
 import com.nybsys.tillboxweb.domain.BookRepository;
 import com.nybsys.tillboxweb.models.accounting.AccountModel;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,9 @@ import java.util.Collection;
 public class BookRestController {
 
     private BookRepository repository;
+
+    @Autowired
+    private YAMLConfig myConfig;
 
     @Inject
     public void setRepository(BookRepository repository) {
@@ -38,6 +43,9 @@ public class BookRestController {
     @RequestMapping(
             method = RequestMethod.GET)
     public ResponseEntity<Collection<Book>> getAllBooks() {
+        System.out.println("using environment: " + myConfig.getPassword());
+        System.out.println("name: " + myConfig.getUsername());
+        System.out.println("servers: " + myConfig.getJpa());
         return new ResponseEntity<>(repository.findAll(), HttpStatus.OK);
     }
 
